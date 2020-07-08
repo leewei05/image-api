@@ -1,7 +1,10 @@
 # Image-api
 
-## Installation
+## Build Docker
 
+```
+docker build -t [tag] .
+```
 
 ## Infrastructure setup
 
@@ -35,3 +38,5 @@ Create GCS bucket and make it public for serving
 gsutil mb gs://image-api-v1
 gsutil defacl set public-read gs://image-api-v1
 ```
+
+## Deploy to GKE
