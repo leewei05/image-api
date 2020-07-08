@@ -13,6 +13,10 @@ func NewDao(db *gorm.DB) Dao {
 	}
 }
 
+func (d *dao) ensureSchema() error {
+	return d.db.AutoMigrate(Material{}).Error
+}
+
 func (d *dao) Get() (*Material, error) {
 	var m Material
 
@@ -35,12 +39,13 @@ func (d *dao) GetOne(n string) (*Material, error) {
 }
 
 func (d *dao) Create(m *Material) error {
-	if err := d.db.Create(&m).Error; err != nil {
-		return err
-	}
-	return nil
+	return d.db.Create(&m).Error
 }
 
-func (d *dao) Update() {}
+func (d *dao) Update(m *Material) error {
+	return d.db.Save(&m).Error
+}
 
-func (d *dao) Delete() {}
+func (d *dao) Delete(m *Material) error {
+	return d.db.Delete(&m).Error
+}

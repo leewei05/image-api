@@ -5,9 +5,10 @@ import "time"
 // Dao is an interface
 type Dao interface {
 	Get() (*Material, error)
+	GetOne(string) (*Material, error)
 	Create(*Material) error
-	Update()
-	Delete()
+	Update(*Material) error
+	Delete(*Material) error
 }
 
 // Material is a struct for material images
