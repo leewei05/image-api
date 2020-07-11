@@ -10,15 +10,22 @@ type postgresDao struct {
 	db *gorm.DB
 }
 
-// NewPostgres is a function that defines a new dao instance
-func NewPostgres(db *gorm.DB) rest.PostgresDao {
-	return &postgresDao{
-		db: db,
-	}
-}
-
+// Automatically migrate your schema, to keep your schema update to date.
 func (p *postgresDao) ensureSchema() error {
 	return p.db.AutoMigrate(image.Material{}).Error
+}
+
+// NewPostgres is a function that defines a new dao instance
+func NewPostgres(db *gorm.DB) (rest.PostgresDao, error) {
+	dao := &postgresDao{
+		db: db,
+	}
+
+	if err := dao.ensureSchema(); err != nil {
+		return nil, err
+	}
+
+	return dao, nil
 }
 
 func (p *postgresDao) Get() (*image.Material, error) {
