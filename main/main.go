@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,7 +15,7 @@ import (
 )
 
 var (
-	db *sql.DB
+	db *gorm.DB
 )
 
 func initDB() {

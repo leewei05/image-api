@@ -1,6 +1,8 @@
 CREATE DATABASE db with ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1 template=template0;
 ALTER DATABASE db SET timezone TO 'UTC';
 
+\connect db
+
 CREATE TABLE materials
 (
 	id SERIAL PRIMARY KEY,

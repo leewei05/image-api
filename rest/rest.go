@@ -1,18 +1,19 @@
 package rest
 
 import (
-	"database/sql"
 	"net/http"
+
+	"github.com/jinzhu/gorm"
 )
 
 // Rest is a struct
 type Rest struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
 // NewRest is a rest
 func NewRest(
-	db *sql.DB,
+	db *gorm.DB,
 ) *Rest {
 	return &Rest{
 		db: db,

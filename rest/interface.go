@@ -4,11 +4,11 @@ import (
 	"github.com/leewei05/image-api"
 )
 
-// ImageDao is an interface
-type ImageDao interface {
-	Get() (*image.Material, error)
-	GetOne(string) (*image.Material, error)
+// PostgresDao is an interface
+type PostgresDao interface {
+	Get() (*[]image.Material, error)
+	GetOne(uint) (*image.Material, error)
 	Create(*image.Material) error
 	Update(*image.Material) error
-	Delete(*image.Material) error
+	Delete(uint) error
 }
