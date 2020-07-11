@@ -3,20 +3,24 @@ package rest
 import (
 	"net/http"
 
+	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 )
 
 // Rest is a struct
 type Rest struct {
-	db *gorm.DB
+	db  *gorm.DB
+	rdb *redis.Client
 }
 
 // NewRest is a rest
 func NewRest(
 	db *gorm.DB,
+	rdb *redis.Client,
 ) *Rest {
 	return &Rest{
-		db: db,
+		db:  db,
+		rdb: rdb,
 	}
 }
 

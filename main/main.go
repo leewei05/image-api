@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/go-redis/redis"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
@@ -15,10 +16,11 @@ import (
 )
 
 var (
-	db *gorm.DB
+	db  *gorm.DB
+	rdb *redis.Client
 )
 
-func initDB() {
+func initPostgres() {
 	_ = godotenv.Load("../config.env")
 
 	dbHost := os.Getenv("PG_HOST")
@@ -40,8 +42,28 @@ func initDB() {
 	}
 }
 
+func initRedis() {
+	_ = godotenv.Load("../config.env")
+
+	redisHost := os.Getenv("REDIS_HOST")
+	redisPort := os.Getenv("REDIS_PORT")
+
+	redisStr := fmt.Sprintf("%s:%s", redisHost, redisPort)
+	rdb = redis.NewClient(&redis.Options{
+		Addr:     redisStr,
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+
+	_, err := rdb.Ping().Result()
+	if err != nil {
+		log.Panic("Cannot open Redis")
+	}
+}
+
 func main() {
-	initDB()
+	initPostgres()
+	initRedis()
 
 	serverPort := os.Getenv("HTTP_PORT")
 	if serverPort == "" {
@@ -49,7 +71,7 @@ func main() {
 	}
 
 	r := mux.NewRouter().StrictSlash(true)
-	ri := rest.NewRest(db)
+	ri := rest.NewRest(db, rdb)
 
 	r.HandleFunc("api/v1/", ri.GetProduct).Methods("GET")
 	r.HandleFunc("api/v1/{id}", ri.CreateProduct).Methods("POST")
