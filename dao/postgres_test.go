@@ -12,11 +12,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// Spin up Postgres Docker
-// docker run -it --rm -p 5432:5432 -e POSTGRES_PASSWORD=123456 postgres
-
-// Create default database and table
-// psql -h localhost -U postgres -f ../sql/create_table.sql
 var (
 	testImages = []image.Material{
 		{
@@ -75,8 +70,31 @@ func (p *postgresTestSuite) insertTestEntries() {
 }
 
 func (p *postgresTestSuite) TestGet() {
-	images, err := p.impl.Get()
+	_, err := p.impl.Get()
+	p.NoError(err)
+}
+
+func (p *postgresTestSuite) TestGetOneEntity() {
+	_, err := p.impl.GetOne(1)
+	p.NoError(err)
+}
+
+func (p *postgresTestSuite) TestUpdate() {
+	updateImage := &image.Material{
+		ID:    1,
+		Name:  "Turtle",
+		URL:   "gs://image-api-v1/turtle.png",
+		Price: 100,
+	}
+
+	err := p.impl.Update(updateImage)
+	p.NoError(err)
+}
+
+func (p *postgresTestSuite) TestDelete() {
+	err := p.impl.Delete(2)
 	p.NoError(err)
 
-	fmt.Println(images)
+	err = p.impl.Delete(0)
+	p.Error(err)
 }
