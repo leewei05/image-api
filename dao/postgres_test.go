@@ -74,13 +74,9 @@ func (p *postgresTestSuite) insertTestEntries() {
 	}
 }
 
-func (p *postgresTestSuite) TestCreate() {
-	image := image.Material{
-		Name:  "Rabbit",
-		URL:   "gs://image-api-v1/rabbit.png",
-		Price: 40,
-	}
-
-	err := p.impl.Create(&image)
+func (p *postgresTestSuite) TestGet() {
+	images, err := p.impl.Get()
 	p.NoError(err)
+
+	fmt.Println(images)
 }

@@ -28,14 +28,14 @@ func NewPostgres(db *gorm.DB) (rest.PostgresDao, error) {
 	return dao, nil
 }
 
-func (p *postgresDao) Get() (*image.Material, error) {
-	var m image.Material
+func (p *postgresDao) Get() (*[]image.Material, error) {
+	var materials []image.Material
 
-	if err := p.db.Find(&m).Error; err != nil {
+	if err := p.db.Find(&materials).Error; err != nil {
 		return nil, err
 	}
 
-	return &m, nil
+	return &materials, nil
 }
 
 func (p *postgresDao) GetOne(n string) (*image.Material, error) {

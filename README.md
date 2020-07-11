@@ -1,9 +1,14 @@
 # Image-api
 
-## Build Docker
+## Local Testing
 
 ```
 docker build -t [tag] .
+
+// Run PostgreSQL
+docker run -it --rm -p 5432:5432 -e POSTGRES_PASSWORD=123456 postgres
+// Create database
+psql -h localhost -U postgres -f ./sql/create_table.sql
 ```
 
 ## Infrastructure setup
