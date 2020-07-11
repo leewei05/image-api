@@ -15,4 +15,7 @@ type PostgresDao interface {
 
 // RedisDao is an interface for accessing Redis
 type RedisDao interface {
+	Set(string, string) error
+	Get(string) (string, error)
+	Flush() error
 }

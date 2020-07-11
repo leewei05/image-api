@@ -9,9 +9,13 @@ docker build -t [tag] .
 docker run -it --rm -p 5432:5432 -e POSTGRES_PASSWORD=123456 postgres
 // Create database
 psql -h localhost -U postgres -f ./sql/create_table.sql
+// Connect to PostgreSQL
+psql -h localhost -U postgres
 
 // Run Redis
 docker run --rm -p 6379:6379 redis
+// Connect to Redis
+redis-cli -h localhost -p 6379
 ```
 
 ## Infrastructure setup
