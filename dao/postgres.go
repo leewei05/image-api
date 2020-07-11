@@ -6,22 +6,22 @@ import (
 	"github.com/leewei05/image-api/rest"
 )
 
-type postgres struct {
+type postgresDao struct {
 	db *gorm.DB
 }
 
-// NewDao is a function that defines a new dao instance
-func NewDao(db *gorm.DB) rest.ImageDao {
-	return &postgres{
+// NewPostgres is a function that defines a new dao instance
+func NewPostgres(db *gorm.DB) rest.PostgresDao {
+	return &postgresDao{
 		db: db,
 	}
 }
 
-func (p *postgres) ensureSchema() error {
+func (p *postgresDao) ensureSchema() error {
 	return p.db.AutoMigrate(image.Material{}).Error
 }
 
-func (p *postgres) Get() (*image.Material, error) {
+func (p *postgresDao) Get() (*image.Material, error) {
 	var m image.Material
 
 	if err := p.db.Find(&m).Error; err != nil {
@@ -31,7 +31,7 @@ func (p *postgres) Get() (*image.Material, error) {
 	return &m, nil
 }
 
-func (p *postgres) GetOne(n string) (*image.Material, error) {
+func (p *postgresDao) GetOne(n string) (*image.Material, error) {
 	var m image.Material
 	sql := "name = ?"
 
@@ -42,14 +42,14 @@ func (p *postgres) GetOne(n string) (*image.Material, error) {
 	return &m, nil
 }
 
-func (p *postgres) Create(m *image.Material) error {
+func (p *postgresDao) Create(m *image.Material) error {
 	return p.db.Create(&m).Error
 }
 
-func (p *postgres) Update(m *image.Material) error {
+func (p *postgresDao) Update(m *image.Material) error {
 	return p.db.Save(&m).Error
 }
 
-func (p *postgres) Delete(m *image.Material) error {
+func (p *postgresDao) Delete(m *image.Material) error {
 	return p.db.Delete(&m).Error
 }
