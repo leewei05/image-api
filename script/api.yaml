@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: go-api 
-        image: gcr.io/gcp-expert-sandbox-lee/go-api:latest
+        image: gcr.io/[PROJECT_ID]/go-api:latest
         ports:
         - containerPort: 8080 

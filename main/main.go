@@ -20,7 +20,7 @@ var (
 )
 
 func initDB() {
-	_ = godotenv.Load("config.env")
+	_ = godotenv.Load("../config.env")
 
 	dbHost := os.Getenv("PG_HOST")
 	dbPort := os.Getenv("PG_PORT")
@@ -50,7 +50,7 @@ func main() {
 	}
 
 	r := mux.NewRouter().StrictSlash(true)
-	ri := rest.NewRest()
+	ri := rest.NewRest(db)
 
 	r.HandleFunc("api/v1/", ri.GetProduct).Methods("GET")
 	r.HandleFunc("api/v1/{id}", ri.CreateProduct).Methods("POST")
