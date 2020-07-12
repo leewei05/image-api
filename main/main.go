@@ -12,6 +12,8 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
 	"github.com/leewei05/image-api/rest"
+
+	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
 )
 

@@ -1,10 +1,8 @@
 # Image-api
 
-## Local Testing
+## Local Testing & Build
 
 ```
-docker build -t [tag] .
-
 // Run PostgreSQL
 docker run -it --rm -p 5432:5432 -e POSTGRES_PASSWORD=123456 postgres
 // Create database
@@ -16,6 +14,12 @@ psql -h localhost -U postgres
 docker run --rm -p 6379:6379 redis
 // Connect to Redis
 redis-cli -h localhost -p 6379
+
+// Run go test in root directory
+go test -v ./...
+
+// Build Docker image
+docker build -t image-api .
 ```
 
 ## Infrastructure setup

@@ -17,20 +17,20 @@ COPY . .
 RUN go mod download
 
 # Build our go code into binary
-RUN go build -o main .
+RUN go build -o main ./main
 
 # Build our final image using an explicitly empty image, scratch
 FROM scratch 
 
 # Set our execution directory and copy our binary
-WORKDIR /app
-COPY --from=builder /build/main /app/main
+WORKDIR /app/main
+COPY --from=builder /build/main/main /app/main/main
 COPY --from=builder /build/config.env /app/config.env
 
 # Expose our HTTP server to port 8080
 EXPOSE 8080
 
 # Command to run when starting the container
-CMD ["/app/main"]
+CMD ["/app/main/main"]
 
 

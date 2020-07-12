@@ -19,3 +19,7 @@ type RedisDao interface {
 	Get(string) (string, error)
 	Flush() error
 }
+
+// StorageDao is an interface for managing Cloud Storage
+type StorageDao interface {
+}
