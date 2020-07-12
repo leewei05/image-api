@@ -41,3 +41,7 @@ func (s *storageTestSuite) TestCheckExists() {
 	s.NoError(err)
 	s.Equal(false, b)
 }
+
+func (s *storageTestSuite) TestUploadFile() {
+
+}

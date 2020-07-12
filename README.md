@@ -15,6 +15,11 @@ docker run --rm -p 6379:6379 redis
 // Connect to Redis
 redis-cli -h localhost -p 6379
 
+// Create test GCS bucket
+gsutil mb gs://[BUCKETNAME]
+// Copy image 'cat.jpg' to the GCS bucket
+gsutil cp ./assets/cat.jpg gs://lee-image-test
+
 // Run go test in root directory
 go test -v ./...
 
