@@ -3,6 +3,7 @@ package dao
 import (
 	"context"
 	"io"
+	"io/ioutil"
 	"os"
 	"time"
 
@@ -38,6 +39,35 @@ func (s *storageDao) CheckExists(bucket, object string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (s *storageDao) GetObject(bucketName, object string) ([]byte, error) {
+	ctx := context.Background()
+	r, err := s.client.
+		Bucket(bucketName).
+		Object(object).
+		NewReader(ctx)
+
+	if err != nil {
+		return []byte{}, err
+	}
+	defer r.Close()
+
+	return ioutil.ReadAll(r)
+}
+
+func (s *storageDao) WriteContentTo(bucket, dstFile, contentType string, b []byte) error {
+	ctx := context.Background()
+	w := s.client.Bucket(bucket).Object(dstFile).NewWriter(ctx)
+	w.ContentType = contentType
+
+	_, err := w.Write(b)
+	if err != nil {
+		return err
+	}
+	defer w.Close()
+
+	return err
 }
 
 func (s *storageDao) UploadFile(bucketName, src, dst string) error {
