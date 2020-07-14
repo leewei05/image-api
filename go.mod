@@ -8,8 +8,8 @@ require (
 	github.com/gorilla/mux v1.7.4
 	github.com/jinzhu/gorm v1.9.14
 	github.com/joho/godotenv v1.3.0
+	github.com/leewei05/go-api v0.0.0-20200708123905-e939e64426ed
 	github.com/lib/pq v1.5.2
-	github.com/mattn/go-sqlite3 v2.0.1+incompatible // indirect
 	github.com/onsi/ginkgo v1.14.0 // indirect
 	github.com/stretchr/testify v1.6.1
 )

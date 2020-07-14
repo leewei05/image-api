@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
-	"github.com/leewei05/image-api/rest"
+	"github.com/leewei05/image-api/core"
 )
 
 var (
@@ -14,7 +14,7 @@ var (
 )
 
 // NewStorage creates a new Cloud Storage Manager
-func NewStorage(c *storage.Client) rest.StorageDao {
+func NewStorage(c *storage.Client) core.StorageDao {
 	return &storageDao{
 		client: c,
 	}

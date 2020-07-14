@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"time"
 
+	"cloud.google.com/go/storage"
 	"github.com/go-redis/redis"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -20,6 +22,7 @@ import (
 var (
 	db  *gorm.DB
 	rdb *redis.Client
+	gcs *storage.Client
 )
 
 func initPostgres() {
@@ -63,6 +66,14 @@ func initRedis() {
 	}
 }
 
+func initGCS() {
+	g, err := storage.NewClient(context.Background())
+	gcs = g
+	if err != nil {
+		log.Panic("error for initiating storage client")
+	}
+}
+
 func main() {
 	initPostgres()
 	initRedis()
@@ -73,7 +84,7 @@ func main() {
 	}
 
 	r := mux.NewRouter().StrictSlash(true)
-	ri := rest.NewRest(db, rdb)
+	ri := rest.NewRest(db, rdb, gcs)
 
 	r.HandleFunc("api/v1/", ri.GetProduct).Methods("GET")
 	r.HandleFunc("api/v1/{id}", ri.CreateProduct).Methods("POST")

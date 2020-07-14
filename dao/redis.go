@@ -2,7 +2,7 @@ package dao
 
 import (
 	"github.com/go-redis/redis"
-	"github.com/leewei05/image-api/rest"
+	"github.com/leewei05/image-api/core"
 )
 
 type redisDao struct {
@@ -10,7 +10,7 @@ type redisDao struct {
 }
 
 // NewRedisDao creates a new Redis Client
-func NewRedisDao(c *redis.Client) rest.RedisDao {
+func NewRedisDao(c *redis.Client) core.RedisDao {
 	return &redisDao{
 		rdb: c,
 	}

@@ -6,7 +6,6 @@ import (
 	"cloud.google.com/go/storage"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
-	"github.com/leewei05/image-api/core"
 )
 
 // Rest is a struct
@@ -21,7 +20,7 @@ func NewRest(
 	db *gorm.DB,
 	rdb *redis.Client,
 	gcs *storage.Client,
-) core.Rest {
+) Rest {
 	return &rest{
 		db:  db,
 		rdb: rdb,
