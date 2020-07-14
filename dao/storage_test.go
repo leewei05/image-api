@@ -57,18 +57,35 @@ func (s *storageTestSuite) TestGetObject() {
 	s.Equal(cat, b)
 }
 
-func (s *storageTestSuite) TestWriteContentToGCS() {
+func (s *storageTestSuite) TestWriteObjectToGCS() {
 	filePath := path.Join("gcs_write_test", "turtle.jpg")
 	turtle, err := fileToBytes("../assets/turtle.jpg")
 	s.NoError(err)
 
-	err = s.impl.WriteContentTo(testBucket, filePath, contentTypeImg, turtle)
+	err = s.impl.WriteObject(testBucket, filePath, contentTypeImg, turtle)
 	s.NoError(err)
 
 	imageWritePath := path.Join("gcs_write_test", testImageWrite)
 	t, err := s.impl.GetObject(testBucket, imageWritePath)
 	s.NoError(err)
 	s.Equal(turtle, t)
+}
+
+func (s *storageTestSuite) TestRemoveObject() {
+	filePath := path.Join("gcs_remove_test", "turtle.jpg")
+	turtle, err := fileToBytes("../assets/turtle.jpg")
+	s.NoError(err)
+
+	err = s.impl.WriteObject(testBucket, filePath, contentTypeImg, turtle)
+	s.NoError(err)
+
+	ok, err := s.impl.RemoveObject(testBucket, filePath)
+	s.NoError(err)
+	s.Equal(true, ok)
+
+	ok, err = s.impl.CheckExists(testBucket, filePath)
+	s.NoError(err)
+	s.Equal(false, ok)
 }
 
 func fileToBytes(filePath string) ([]byte, error) {

@@ -2,9 +2,7 @@ package dao
 
 import (
 	"context"
-	"io"
 	"io/ioutil"
-	"os"
 	"time"
 
 	"cloud.google.com/go/storage"
@@ -26,11 +24,11 @@ type storageDao struct {
 	client *storage.Client
 }
 
-func (s *storageDao) CheckExists(bucket, object string) (bool, error) {
+func (s *storageDao) CheckExists(bucketName, object string) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), gcsAPITimeout)
 	defer cancel()
 
-	_, err := s.client.Bucket(bucket).Object(object).Attrs(ctx)
+	_, err := s.client.Bucket(bucketName).Object(object).Attrs(ctx)
 	if err == storage.ErrObjectNotExist {
 		return false, nil
 	}
@@ -56,9 +54,9 @@ func (s *storageDao) GetObject(bucketName, object string) ([]byte, error) {
 	return ioutil.ReadAll(r)
 }
 
-func (s *storageDao) WriteContentTo(bucket, dstFile, contentType string, b []byte) error {
+func (s *storageDao) WriteObject(bucketName, dstFile, contentType string, b []byte) error {
 	ctx := context.Background()
-	w := s.client.Bucket(bucket).Object(dstFile).NewWriter(ctx)
+	w := s.client.Bucket(bucketName).Object(dstFile).NewWriter(ctx)
 	w.ContentType = contentType
 
 	_, err := w.Write(b)
@@ -70,26 +68,17 @@ func (s *storageDao) WriteContentTo(bucket, dstFile, contentType string, b []byt
 	return err
 }
 
-func (s *storageDao) UploadFile(bucketName, src, dst string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), gcsAPITimeout)
-	defer cancel()
+func (s *storageDao) RemoveObject(bucketName, path string) (bool, error) {
+	deleteCtx, deleteCancel := context.WithTimeout(context.Background(), gcsAPITimeout)
+	defer deleteCancel()
 
-	writer := s.client.
-		Bucket(bucketName).
-		Object(dst).
-		NewWriter(ctx)
-
-	reader, err := os.Open(src)
-	if err != nil {
-		return err
+	err := s.client.Bucket(bucketName).Object(path).Delete(deleteCtx)
+	if err == storage.ErrObjectNotExist {
+		return false, err
 	}
-	defer writer.Close()
-	defer reader.Close()
+	if err != nil {
+		return true, err
+	}
 
-	return s.fileCopy(writer, reader)
-}
-
-func (s *storageDao) fileCopy(w io.Writer, r io.Reader) error {
-	_, err := io.Copy(w, r)
-	return err
+	return true, nil
 }
