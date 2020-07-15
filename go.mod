@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	cloud.google.com/go/storage v1.10.0
+	github.com/c2fo/testify v0.0.0-20150827203832-fba96363964a
 	github.com/go-redis/redis v6.15.8+incompatible
 	github.com/gorilla/mux v1.7.4
 	github.com/jinzhu/gorm v1.9.14

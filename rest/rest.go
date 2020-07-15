@@ -6,13 +6,15 @@ import (
 	"cloud.google.com/go/storage"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
+	"github.com/leewei05/image-api/core"
 )
 
 // Rest is a struct
 type rest struct {
-	db  *gorm.DB
-	rdb *redis.Client
-	gcs *storage.Client
+	db   *gorm.DB
+	rdb  *redis.Client
+	gcs  *storage.Client
+	core core.Core
 }
 
 // NewRest is a rest
@@ -21,16 +23,20 @@ func NewRest(
 	rdb *redis.Client,
 	gcs *storage.Client,
 ) Rest {
+	c := core.NewCore(db, rdb, gcs)
 	return &rest{
-		db:  db,
-		rdb: rdb,
-		gcs: gcs,
+		db:   db,
+		rdb:  rdb,
+		gcs:  gcs,
+		core: c,
 	}
 }
 
 // GetProduct is
 func (ri *rest) GetProduct(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello"))
+	res := ri.core.GetImage(0)
+
+	w.Write([]byte(res))
 }
 
 // CreateProduct is

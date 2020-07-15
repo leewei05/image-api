@@ -86,10 +86,10 @@ func main() {
 	r := mux.NewRouter().StrictSlash(true)
 	ri := rest.NewRest(db, rdb, gcs)
 
-	r.HandleFunc("api/v1/", ri.GetProduct).Methods("GET")
-	r.HandleFunc("api/v1/{id}", ri.CreateProduct).Methods("POST")
-	r.HandleFunc("api/v1/{id}", ri.UpdateProduct).Methods("PUT")
-	r.HandleFunc("api/v1/{id}", ri.DeleteProduct).Methods("DELETE")
+	r.HandleFunc("/api/v1/", ri.GetProduct).Methods("GET")
+	r.HandleFunc("/api/v1/{id}", ri.CreateProduct).Methods("POST")
+	r.HandleFunc("/api/v1/{id}", ri.UpdateProduct).Methods("PUT")
+	r.HandleFunc("/api/v1/{id}", ri.DeleteProduct).Methods("DELETE")
 
 	http.Handle("/", r)
 

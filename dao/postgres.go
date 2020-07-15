@@ -5,7 +5,6 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/leewei05/image-api"
-	"github.com/leewei05/image-api/core"
 )
 
 type postgresDao struct {
@@ -18,7 +17,7 @@ func (p *postgresDao) ensureSchema() error {
 }
 
 // NewPostgres is a function that defines a new dao instance
-func NewPostgres(db *gorm.DB) (core.PostgresDao, error) {
+func NewPostgres(db *gorm.DB) (PostgresDao, error) {
 	dao := &postgresDao{
 		db: db,
 	}
