@@ -22,14 +22,18 @@ func NewRest(
 	db *gorm.DB,
 	rdb *redis.Client,
 	gcs *storage.Client,
-) Rest {
-	c := core.NewCore(db, rdb, gcs)
+) (Rest, error) {
+	c, err := core.NewCore(db, rdb, gcs)
+	if err != nil {
+		return nil, err
+	}
+
 	return &rest{
 		db:   db,
 		rdb:  rdb,
 		gcs:  gcs,
 		core: c,
-	}
+	}, nil
 }
 
 // GetProduct is

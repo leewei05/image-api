@@ -84,7 +84,10 @@ func main() {
 	}
 
 	r := mux.NewRouter().StrictSlash(true)
-	ri := rest.NewRest(db, rdb, gcs)
+	ri, err := rest.NewRest(db, rdb, gcs)
+	if err != nil {
+		log.Panic(err)
+	}
 
 	r.HandleFunc("/api/v1/", ri.GetProduct).Methods("GET")
 	r.HandleFunc("/api/v1/{id}", ri.CreateProduct).Methods("POST")

@@ -41,6 +41,15 @@ func NewCore(
 	}, nil
 }
 
+func (c *core) CreateImage(bucketName, dst, imageName, contentType string, bs []byte) error {
+	err := c.gcs.WriteObject(bucketName, dst, contentType, bs)
+	if err != nil {
+		return nil
+	}
+
+	return nil
+}
+
 func (c *core) GetImage(id int) string {
 	return "hey bro"
 }
