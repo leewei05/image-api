@@ -1,6 +1,9 @@
 package core
 
 import (
+	"errors"
+	"path"
+
 	"cloud.google.com/go/storage"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
@@ -42,9 +45,23 @@ func NewCore(
 }
 
 func (c *core) CreateImage(bucketName, dst, imageName, contentType string, bs []byte) error {
+	path := path.Join(dst, imageName)
+	if ok, err := c.gcs.CheckExists(bucketName, path); ok {
+		if err != nil {
+			return err
+		}
+
+		return errors.New("Object exists")
+	}
+
 	err := c.gcs.WriteObject(bucketName, dst, contentType, bs)
 	if err != nil {
 		return nil
+	}
+
+	err = c.redis.Set(imageName, path)
+	if err != nil {
+		return err
 	}
 
 	return nil
