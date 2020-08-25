@@ -89,10 +89,10 @@ func main() {
 		log.Panic(err)
 	}
 
-	r.HandleFunc("/api/v1/", ri.GetProduct).Methods("GET")
-	r.HandleFunc("/api/v1/{id}", ri.CreateProduct).Methods("POST")
-	r.HandleFunc("/api/v1/{id}", ri.UpdateProduct).Methods("PUT")
-	r.HandleFunc("/api/v1/{id}", ri.DeleteProduct).Methods("DELETE")
+	r.HandleFunc("/api/v1/products", ri.GetProduct).Methods("GET")
+	r.HandleFunc("/api/v1/products/{id}", ri.CreateProduct).Methods("POST")
+	r.HandleFunc("/api/v1/products/{id}", ri.UpdateProduct).Methods("PUT")
+	r.HandleFunc("/api/v1/products/{id}", ri.DeleteProduct).Methods("DELETE")
 
 	http.Handle("/", r)
 
